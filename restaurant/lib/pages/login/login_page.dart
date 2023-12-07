@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:restaurant/homepage.widget.dart';
-import 'register_page.dart';
+import '../menu/menu.widget.dart';
+import '../register/register_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
             ElevatedButton(onPressed: () {
               if (email.isNotEmpty && password.isNotEmpty) {
                 Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => const MyHomePage()));
+                    builder: (context) => const MenuPage()));
               }
             }, child: const Text('Connexion')),
             const SizedBox(height: 10),

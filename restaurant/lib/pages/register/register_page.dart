@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant/homepage.widget.dart';
-import 'login_page.dart';
+import '../login/login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
