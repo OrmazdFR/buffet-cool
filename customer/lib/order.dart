@@ -22,7 +22,6 @@ class _OrderPageState extends State<OrderPage> {
     Food('Nems miam'),
   ];
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,16 +32,14 @@ class _OrderPageState extends State<OrderPage> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          textDirection: TextDirection.ltr,
           children: <Widget>[
-            const Text( 'Food list',
-              textDirection: TextDirection.ltr,
-            ),
-            for(var food in foodList) Text(food.name), const Counter(value: 0)
+            const Directionality(
+                textDirection: TextDirection.ltr, child: Text('Food list')),
+            for (var food in foodList) Text(food.name),
+            const Counter(value: 0)
           ],
         ),
       ),
     );
   }
 }
-

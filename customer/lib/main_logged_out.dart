@@ -17,15 +17,16 @@ class _MyAppState extends State<MyApp> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Oui',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
+        child:
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(
+                'Oui',
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+            ],
+          ),
       ),
     );
   }
