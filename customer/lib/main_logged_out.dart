@@ -16,20 +16,19 @@ class _MyAppState extends State<MyApp> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
       ),
-      body: Center(
-        child:
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
+      body: const Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Directionality(
+              textDirection: TextDirection.ltr,
+              child: Text(
                 'Oui',
-                style: Theme.of(context).textTheme.headlineMedium,
               ),
-            ],
-          ),
+            )
+          ],
+        ),
       ),
     );
   }
 }
-
-
