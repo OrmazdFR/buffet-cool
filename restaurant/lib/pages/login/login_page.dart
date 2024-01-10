@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../menu/menu.widget.dart';
 import '../register/register_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -11,6 +12,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   String email = "";
   String password = "";
@@ -46,12 +48,44 @@ class _LoginPageState extends State<LoginPage> {
                 )
             ),
             const SizedBox(height: 10),
-            ElevatedButton(onPressed: () {
-              if (email.isNotEmpty && password.isNotEmpty) {
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => const MenuPage()));
-              }
-            }, child: const Text('Connexion')),
+            ElevatedButton(
+              onPressed: () async {
+                if (email.isNotEmpty && password.isNotEmpty) {
+                  try {
+                    UserCredential userCredential =
+                    await _auth.signInWithEmailAndPassword(
+                        email: email, password: password);
+                    print('User logged in: ${userCredential.user!.uid}');
+
+                    // Navigate to the menu page after successful login
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => MenuPage()));
+                  } on FirebaseAuthException catch (e) {
+                    print('Error logging in: $e');
+
+                    // Show a pop-up with the Firebase error message
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Login Error'),
+                          content: Text(e.message ?? 'An error occurred during login.'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                }
+              },
+              child: const Text('Connexion'),
+            ),
             const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

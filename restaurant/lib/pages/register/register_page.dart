@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:restaurant/homepage.widget.dart';
 import '../login/login_page.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -10,6 +11,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   String email = "";
   String password = "";
@@ -45,10 +47,36 @@ class _RegisterPageState extends State<RegisterPage> {
                 )
             ),
             const SizedBox(height: 10),
-            ElevatedButton(onPressed: () {
+            ElevatedButton(onPressed: () async {
               if (email.isNotEmpty && password.isNotEmpty) {
-                Navigator.push(context, MaterialPageRoute(
-                    builder: (context) => const MyHomePage()));
+                try {
+                  UserCredential userCredential =
+                      await _auth.createUserWithEmailAndPassword(
+                      email: email, password: password);
+                  print('User registered: ${userCredential.user!.uid}');
+
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => MyHomePage()));
+                } on FirebaseAuthException catch (e) {
+                  print('Error registering user: $e');
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: const Text('Registration Error'),
+                        content: Text(e.message ?? 'An error occurred during registration.'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                }
               }
             }, child: const Text("S'inscrire")),
             const SizedBox(height: 10),

@@ -1,17 +1,23 @@
 class Item {
-  int id;
+  String? ref;
   String name;
+  bool availability;
 
-  Item(this.id, this.name);
+  Item({this.ref, required this.name, required this.availability});
 
-  static Item fromJSON(Map<String, dynamic> json) {
-    return Item(json['id'], json['name']);
+  factory Item.fromJSON(Map<String, dynamic> json) {
+    return Item(
+      ref: json['ref'],
+      name: json['name'],
+      availability: json['availability'],
+    );
   }
 
   Map<String, dynamic> toJSON() {
     return {
-      'id': id,
+      'ref': ref,
       'name': name,
+      'availability': availability,
     };
   }
 }
