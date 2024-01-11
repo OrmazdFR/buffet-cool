@@ -37,6 +37,7 @@ class _MenuCellState extends State<MenuCell> {
               _showEditItemDialog(context);
               widget.onEdit;
             },
+            tooltip: "Modifier",
           ),
           IconButton(
             icon: const Icon(Icons.delete),
@@ -44,6 +45,7 @@ class _MenuCellState extends State<MenuCell> {
               ItemService().deleteItem(widget.item.ref!);
               widget.onDelete();
             },
+            tooltip: "Supprimer",
           ),
         ],
       ),

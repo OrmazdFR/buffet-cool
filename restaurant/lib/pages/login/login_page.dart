@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../menu/menu.widget.dart';
+import '../home/home_page.dart';
 import '../register/register_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -22,7 +22,7 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text("Connexion !"),
+        title: const Text("Connexion"),
       ),
       body: Center(
         child: Column(
@@ -58,29 +58,35 @@ class _LoginPageState extends State<LoginPage> {
                     print('User logged in: ${userCredential.user!.uid}');
 
                     // Navigate to the menu page after successful login
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => MenuPage()));
+                    if (context.mounted) {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder:
+                               (context) => const HomePage()));
+                    }
                   } on FirebaseAuthException catch (e) {
                     print('Error logging in: $e');
 
                     // Show a pop-up with the Firebase error message
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          title: const Text('Login Error'),
-                          content: Text(e.message ?? 'An error occurred during login.'),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text('OK'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
+                    if(context.mounted) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Login Error'),
+                            content: Text(
+                                e.message ?? 'An error occurred during login.'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
                   }
                 }
               },

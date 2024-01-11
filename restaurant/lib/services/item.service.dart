@@ -1,5 +1,3 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 import '../dtos/item.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -9,22 +7,20 @@ class ItemService {
 
   Future<List<Item>> getItems() async {
     try {
-      // Listen for real-time changes
       Stream<QuerySnapshot> stream = items.snapshots();
       List<Item> firestoreItems = [];
 
-      // Subscribe to the stream
       await for (QuerySnapshot querySnapshot in stream) {
         firestoreItems = querySnapshot.docs.map((doc) {
           return Item.fromJSON(doc.data() as Map<String, dynamic>)
-            ..ref = doc.reference.id; // Assign the document ID as the reference
+            ..ref = doc.reference.id;
         }).toList();
 
         if (firestoreItems.isNotEmpty) {
           return firestoreItems;
         }
       }
-      // If no items are available, return an empty list
+
       return [];
     } catch (error) {
       print('Error getting real-time items: $error');

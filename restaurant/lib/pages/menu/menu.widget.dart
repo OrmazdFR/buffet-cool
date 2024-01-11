@@ -20,7 +20,7 @@ class _MenuPageState extends State<MenuPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Menu !'),
+        title: const Text('Menu'),
       ),
       body: FutureBuilder(
         future: ItemService().getItems(),
@@ -30,14 +30,20 @@ class _MenuPageState extends State<MenuPage> {
               child: Text("Erreur de plat !"),
             );
           }
-          if (!snapshot.hasData || snapshot.data == null) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
 
+          if (!snapshot.hasData || snapshot.data == null) {
+            return const Center(
+              child: Text("Pas de plats disponibles."),
+            );
+          }
+
           return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -46,14 +52,40 @@ class _MenuPageState extends State<MenuPage> {
                   style: Theme.of(context).textTheme.headline6,
                 ),
               ),
-              ElevatedButton(
-                onPressed: () {
-                  // Show the pop-up for adding a new item
-                  _showAddItemDialog(context);
-                },
-                child: const Text('Ajouter un plat'),
+              const SizedBox(height: 20),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: Stack(
+                  children: <Widget>[
+                    Positioned.fill(
+                      child: Container(
+                        decoration: const BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: <Color>[
+                              Color(0xFF0D47A1),
+                              Color(0xFF1976D2),
+                              Color(0xFF42A5F5),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    TextButton(
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.all(16.0),
+                        textStyle: const TextStyle(fontSize: 20),
+                      ),
+                      onPressed: () {
+                        // Show the pop-up for adding a new item
+                        _showAddItemDialog(context);
+                      },
+                      child: const Text('Ajouter un plat'),
+                    ),
+                  ],
+                ),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 20),
               Expanded(
                 child: MenuList(
                   items: snapshot.data!,

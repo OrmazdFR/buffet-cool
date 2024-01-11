@@ -21,7 +21,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text("Inscription !"),
+        title: const Text("Inscription"),
       ),
       body: Center(
         child: Column(
@@ -55,27 +55,33 @@ class _RegisterPageState extends State<RegisterPage> {
                       email: email, password: password);
                   print('User registered: ${userCredential.user!.uid}');
 
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => MyHomePage()));
+                  if(context.mounted){
+                    Navigator.push(context,
+                        MaterialPageRoute(builder:
+                             (context) => const MyHomePage()));
+                  }
                 } on FirebaseAuthException catch (e) {
                   print('Error registering user: $e');
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('Registration Error'),
-                        content: Text(e.message ?? 'An error occurred during registration.'),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text('OK'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
+                  if(context.mounted) {
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: const Text('Registration Error'),
+                          content: Text(e.message ??
+                              'An error occurred during registration.'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
                 }
               }
             }, child: const Text("S'inscrire")),
