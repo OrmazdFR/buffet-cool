@@ -24,20 +24,22 @@ class _OrderPageState extends State<OrderPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text('Round  $widget.round.toString()'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Directionality(
-                textDirection: TextDirection.ltr, child: Text('Food list')),
-            for (var food in foodList) Text(food.name),
-            const Counter(value: 0)
-          ],
+    return MaterialApp(
+      title: 'Round X',
+      home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+          title: Text('Round  $widget.round.toString()'),
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              const Directionality(
+                  textDirection: TextDirection.ltr, child: Text('Food list')),
+              for (var food in foodList) { Text(food.name) const Counter(value: 0) }
+            ],
+          ),
         ),
       ),
     );
